@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block title %}List of Quiz{% endblock %}
+{% block main %}
+<table class="container table table-dark table-striped">
+    <thead>
+        <th>Quiz ID</th>
+        <th>Name</th>
+        <th>Creator</th>
+        <th>Created</th>
+        <th>Take Quiz</th>
+    </thead>
+    <tbody>
+    {% for quiz in listOfQuiz %}
+    <tr>
+        <td>{{quiz.quiz_id}}</td>
+        <td>{{quiz.quiz_name}}</td>
+        <td>{{quiz.maker_username}}</td>
+        <td>{{quiz.timestamp}}</td>
+        <td>
+            <form action="/takequiz">
+                <input type="hidden" name="quiz_id" value="{{quiz.quiz_id}}">
+                <button class="btn btn-primary" type="submit">Take Quiz</button>
+            </form>
+        </td>
+    </tr>        
+    {% endfor %}
+
+    </tbody>
+</table>
+
+
+{% endblock %}
+

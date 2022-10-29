@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block title %}Take a Quiz{% endblock %}
+{% block main %}
+<form class="container" action="/takequiz" method="POST">
+        <input type="hidden" name="quizId" value="{{quizId}}">
+        <h1>{{quizName}}</h1>
+{% for question in quiz %}
+        <h3 class="text-start">{{question.question}}</h3>
+        {% if question.answer_1 %}
+        <div class="form-check text-start">
+                <input class="form-check-label" type="radio" name="{{question.question_id}}" id="ans{{question.question_id}}-1" value="{{question.answer_1}}">
+                <label for="ans{{question.question_id}}-1">{{question.answer_1}}</label>
+        </div>
+        {% endif %}
+        {% if question.answer_2 %}
+        <div class="form-check text-start">
+                <input class="form-check-label" type="radio" name="{{question.question_id}}" id="ans{{question.question_id}}-2" value="{{question.answer_2}}">
+                <label for="ans{{question.question_id}}-2">{{question.answer_2}}</label>
+        </div>
+        {% endif %}
+        {% if question.answer_3 %}
+        <div class="form-check text-start">
+                <input class="form-check-label" type="radio" name="{{question.question_id}}" id="ans{{question.question_id}}-3" value="{{question.answer_3}}">
+                <label for="ans{{question.question_id}}-3">{{question.answer_3}}</label>
+        </div>
+                
+        {% endif %}
+        {% if question.answer_4 %}
+        <div class="form-check text-start">
+                <input class="form-check-label" type="radio" name="{{question.question_id}}" id="ans{{question.question_id}}-4" value="{{question.answer_4}}">
+                <label for="ans{{question.question_id}}-4">{{question.answer_4}}</label>
+        </div>
+        {% endif %}
+        <br>
+        
+{% endfor %}
+
+<button class="btn btn-primary" type="submit">Submit</button>
+</form> 
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+{% block title %}Make a Quiz{% endblock %}
+{% block main %}
+<h2>Make a Quiz</h2>
+
+<form class="container" action="/makequiz" method="POST">
+    <input class="form-control mx-auto w-auto" type="text" name="name" placeholder="Enter Quiz Name Here" required>
+    <!--A hidden input filled to inform the server how many is the qusetion-->
+    <input type="hidden" name="questNum" id="Number_of_question">
+    <button class="btn btn-secondary float-start" type="button" onclick="addQuestion()">Add Question</button>
+    <button class="btn btn-warning float-start" type="button" onclick="removeQuestion()">Remove Question</button>
+    <div id="questions"></div>
+    
+    <button type="submit" class="btn btn-success float-end">Submit</button>
+</form>
+
+{% endblock %}
+{% block script %}
+
+<script>
+    let questionCounter = 1;
+    let answerCounter = {};
+    function addQuestion(){
+            //add new div with text area for question, correct answers and buttons to add new answer and remove answer. alos adds hidden inpute for the answer count on that question
+            document.querySelector('#questions').innerHTML +=
+            `<div id="ques${questionCounter}">
+            <input id="quest${questionCounter}AnswerCount" type="hidden" name="quest${questionCounter}AnswerCount">
+            
+            <textarea name="question_${questionCounter}" class="form-control" placeholder="Enter Question" required></textarea>
+            
+            <input class="form-control mx-auto w-auto" type="text" name="correctQuest${questionCounter}" placeholder="Enter the correct answer/s" required>
+            
+            <button class="btn btn-primary" type="button" onclick="addAnswer(${questionCounter})" >Add Answer</button>
+
+            <button class="btn btn-danger" type="button" onclick="removeAnswer(${questionCounter})">Remove Answer</button>
+            </div>`;
+            answerCounter[`question${questionCounter}`] = 0;
+            //everytime a new question is made updates the hidden input to be the current question count
+            document.querySelector('#Number_of_question').value = questionCounter;
+            //increase the question counter
+            questionCounter++;
+    }
+    function addAnswer(questionNum){
+        if (answerCounter[`question${questionNum}`] < 4){
+            answerCounter[`question${questionNum}`]++;
+            //adds a new text input with name and id of ansquestionNum-ansNum
+            document.querySelector(`#ques${questionNum}`).innerHTML +=   
+            `<input class="form-control mx-auto w-auto" type="text" id="ans${questionNum}-${answerCounter[`question${questionNum}`]}" name="ans${questionNum}-${answerCounter[`question${questionNum}`]}" placeholder="Enter answer" required>`;
+            document.querySelector(`#quest${questionNum}AnswerCount`).value = answerCounter[`question${questionNum}`];
+        } 
+    }
+    function removeAnswer(questionNum){
+        if(answerCounter[`question${questionNum}`] >= 1){
+            //selects the answer last text input thats been added and remove it
+            document.querySelector(`#ans${questionNum}-${answerCounter[`question${questionNum}`]}`).remove();
+            //updates the answer number and answer count
+            answerCounter[`question${questionNum}`]--;
+            document.querySelector(`#quest${questionNum}AnswerCount`).value = answerCounter[`question${questionNum}`];
+        
+        }
+    }
+    function removeQuestion(){
+        if(questionCounter > 1){
+            //removes the last question added and updates the question count
+            document.querySelector(`#ques${questionCounter - 1}`).remove();
+            questionCounter--;
+        }
+    }
+</script>
+
+{% endblock %}

@@ -1,4 +1,3 @@
-from crypt import methods
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from cs50 import SQL
